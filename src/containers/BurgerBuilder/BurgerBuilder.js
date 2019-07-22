@@ -45,6 +45,7 @@ class BurgerBuilder extends Component {
             ingredients: updatedIngredients
         })
         this.updatePerchaseState(updatedIngredients);
+        //testing
     }
 
     removeIngredientHandler = (type) => {
