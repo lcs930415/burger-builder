@@ -1,0 +1,2 @@
+如何给同一个component在不同的地方设置不同的style？可以通过props传递。
+更方便的方法是把这个component用div包起来，再给这个div一个class。
