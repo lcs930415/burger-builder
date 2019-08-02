@@ -10,7 +10,7 @@
 /build
 
 # avoidError
-/src/hoc
+/src/wrap
 
 # misc
 .DS_Store
