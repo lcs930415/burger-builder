@@ -3,7 +3,6 @@ import Aux from '../../../wrap/Auxi';
 import Button from '../../UI/Button/Button';
 class OrderSummary extends Component {
     componentWillUpdate() {
-        console.log("order summary will update")
     }
 
     render() {
