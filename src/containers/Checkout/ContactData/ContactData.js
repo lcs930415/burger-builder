@@ -13,35 +13,40 @@ class ContactData extends Component {
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Your Name'
-                }
+                },
+                value: ""
             },
             street: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Street'
-                }
+                },
+                value: ""
             },
             zipCode: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'ZIP Code'
-                }
+                },
+                value: ""
             },
             country: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Country'
-                }
+                },
+                value: ""
             },
             email: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'email',
                     placeholder: 'Your E-mail'
-                }
+                },
+                value: ""
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -50,7 +55,8 @@ class ContactData extends Component {
                         { value: 'fastest', displayValue: 'Fastest' },
                         { value: 'cheapest', displayValue: 'Cheapest' }
                     ]
-                }
+                },
+                value: ""
             }
         },
         loading: false
@@ -59,18 +65,14 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault();
         this.setState({ loading: true });
+        const formData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: "Chensheng",
-                address: {
-                    street: 'Huntingfield Drive',
-                    company: 'CGI'
-                },
-                email: 'example@udemy.com'
-            },
-            deliveryMethod: 'ordinary'
+            orderData: formData
         }
         axios.post('/orders.json', order)
             .then(
@@ -82,8 +84,22 @@ class ContactData extends Component {
             .catch(error => this.setState({ loading: false }));
     }
 
-    inputChangedHandler = (event) => {
-        console.log(event.target.value);
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = {
+            ...this.state.orderForm
+        }
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        }
+        updatedFormElement.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({ orderForm: updatedOrderForm });
+
+        // SHALLOW COPY: not Recommended!
+        // let updatedOrderForm = this.state.orderForm;
+        // updatedOrderForm[inputIdentifier].value = event.target.value;
+        // this.setState(updatedOrderForm);
+        // console.log(this.state.orderForm[inputIdentifier]);
     }
 
     render() {
@@ -96,14 +112,14 @@ class ContactData extends Component {
         }
 
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {formElementsArray.map(formElement => {
                     return (<Input
                         key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         value={formElement.config.value}
-                        changed={this.inputChangedHandler}
+                        changed={(event) => this.inputChangedHandler(event, formElement.id)}
                     />)
                 })}
                 {/* <Input elementType="..." elementConfig="..." value="..." />
