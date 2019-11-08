@@ -51,12 +51,12 @@ class BurgerBuilder extends Component {
         }
 
         let orderSummary = null;
-        if (this.props.ings!=null) {
+        if (this.props.ings != null) {
             orderSummary = <OrderSummary ingredients={this.props.ings} cancel={this.purchaseCancelHandler} continue={this.purchaseContinueHandler} price={this.props.price} />
         }
 
         let burger = this.props.error ? <p>Ingredients cannot be loaded!</p> : <Spinner />;
-        if (this.props.ings!=null) {
+        if (this.props.ings != null) {
             burger = (
                 <Auxi>
                     <Burger ingredients={this.props.ings} />
@@ -86,9 +86,9 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice,
-        error:state.error
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 }
 
@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onIngredientAdded: (ingredientName) => dispatch(burgerBuilderActions.addIngredient(ingredientName)),
         onIngredientRemoved: (ingredientName) => dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
-        onInitIngredients:()=>dispatch(burgerBuilderActions.initIngredients())
+        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     }
 }
 
