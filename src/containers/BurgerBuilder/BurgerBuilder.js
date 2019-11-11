@@ -11,7 +11,7 @@ import axios from '../../axios-orders';
 
 import { connect } from 'react-redux';
 //import * as actionTypes from '../../store/actions/actionTypes';
-import * as burgerBuilderActions from '../../store/actions/index.js';
+import * as actions from '../../store/actions/index.js';
 
 class BurgerBuilder extends Component {
 
@@ -23,7 +23,7 @@ class BurgerBuilder extends Component {
         this.props.onInitIngredients();
     }
 
-    updatePerchaseState(ingredients) {
+    updatePurchaseState(ingredients) {
         const sum = Object.values(ingredients)
             .reduce((sum, current) => { return sum + current; }, 0);
         return sum > 0;
@@ -38,6 +38,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push('/checkout');
 
     }
@@ -65,7 +66,7 @@ class BurgerBuilder extends Component {
                         ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         price={this.props.price}
-                        perchasable={this.updatePerchaseState(this.props.ings)}
+                        perchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
                     />
                 </Auxi>
@@ -94,9 +95,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onIngredientAdded: (ingredientName) => dispatch(burgerBuilderActions.addIngredient(ingredientName)),
-        onIngredientRemoved: (ingredientName) => dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
-        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+        onIngredientAdded: (ingredientName) => dispatch(actions.addIngredient(ingredientName)),
+        onIngredientRemoved: (ingredientName) => dispatch(actions.removeIngredient(ingredientName)),
+        onInitIngredients: () => dispatch(actions.initIngredients()),
+        onInitPurchase:()=>dispatch(actions.purchaseInit())
     }
 }
 
