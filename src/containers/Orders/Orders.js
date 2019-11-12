@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../wrap/withErrorHandler/withErrorHandler';
@@ -29,12 +29,12 @@ class Orders extends Component {
         //     .catch(err => {
         //         this.setState({ loading: false })
         //     })
-        this.props.onFetchOrders();
+        this.props.onFetchOrders(this.props.token);
     }
     render() {
-        let orders=<Spinner/>
-        if(!this.props.loading){
-            orders=this.props.orders.map(
+        let orders = <Spinner />
+        if (!this.props.loading) {
+            orders = this.props.orders.map(
                 order => {
                     return <Order key={order.id} ingredients={order.ingredients} price={order.price} />
                 }
@@ -48,17 +48,18 @@ class Orders extends Component {
     }
 }
 
-const mapPropsToState=(state)=>{
+const mapPropsToState = (state) => {
     return {
-        orders:state.order.orders,
-        loading:state.order.loading
+        token: state.auth.token,
+        orders: state.order.orders,
+        loading: state.order.loading
     }
 }
 
-const mapDispatchToState=(dispatch)=>{
+const mapDispatchToState = (dispatch) => {
     return {
-        onFetchOrders:()=>dispatch(actions.fetchOrders())
+        onFetchOrders: (token) => dispatch(actions.fetchOrders(token))
     }
 }
 
-export default connect(mapPropsToState,mapDispatchToState)(withErrorHandler(Orders, axios));
+export default connect(mapPropsToState, mapDispatchToState)(withErrorHandler(Orders, axios));
