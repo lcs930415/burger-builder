@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import axios from 'axios';
 
 export const authStart = () => {
     return {
@@ -6,9 +7,11 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = () => {
+export const authSuccess = (idToken,userId) => {
     return {
-        type: actionTypes.AUTH_SUCCESS
+        type: actionTypes.AUTH_SUCCESS,
+        idToken:idToken,
+        userId:userId
     }
 }
 
@@ -19,8 +22,28 @@ export const authFail = (error) => {
     }
 }
 
-export const auth = (email, password) => {
+export const auth = (email, password,isSignUp) => {
     return dispatch => {
         dispatch(authStart());
+        const authData={
+            email:email,
+            password:password,
+            returnSecureToken:true
+        }
+        //axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAuJcqDddBhCFY2QYhql5q4SQbTTRQp6fI',authData)
+        let url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAuJcqDddBhCFY2QYhql5q4SQbTTRQp6fI';
+        if(!isSignUp){
+            url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAuJcqDddBhCFY2QYhql5q4SQbTTRQp6fI';
+        }
+        console.log(url)
+        axios.post(url,authData)
+            .then(response=>{
+                console.log(response)
+                dispatch(authSuccess(response.data.idToken,response.data.userId));
+            })
+            .catch(err=>{
+                console.log(err);
+                dispatch(authFail(err))
+            })
     }
 }
