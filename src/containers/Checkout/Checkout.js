@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 class Checkout extends Component {
 
-    componentWillMount(){
+    componentWillMount() {
     }
 
     checkoutCancelledHandler = () => {
@@ -18,10 +18,8 @@ class Checkout extends Component {
     }
     render() {
         let summary = <Redirect to='/' />
-        
-        console.log(this.props.ings)
         if (this.props.ings) {
-            const purchasedRedirect = this.props.purchased? <Redirect to='/' />:null
+            const purchasedRedirect = this.props.purchased ? <Redirect to='/' /> : null
             summary = (
                 <div>
                     {purchasedRedirect}
@@ -37,7 +35,7 @@ class Checkout extends Component {
 const mapStateToProps = (state) => {
     return {
         ings: state.burgerBuilder.ingredients,
-        purchased:state.order.purchased
+        purchased: state.order.purchased
     }
 }
 

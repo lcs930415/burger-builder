@@ -10,11 +10,10 @@ const sideDrawer = (props) => {
     if (props.showSideDrawer) {
         attachedClasses = [classes.SideDrawer, classes.Open]
     }
-    console.log("sideDrawer   " + props.isAuth)
     return (
         <Aux>
             <Backdrop show={props.showSideDrawer} clicked={props.closeSideDrawer} />
-            <div className={attachedClasses.join(' ')}>
+            <div className={attachedClasses.join(' ')} onClick={props.closed}>
                 <div className={classes.Logo}>
                     <Logo />
                 </div>
